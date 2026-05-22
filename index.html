@@ -17,727 +17,120 @@
     --muted: #666666;
     --muted2: #444444;
   }
-
   *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-
   html { scroll-behavior: smooth; }
-
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: 'DM Sans', sans-serif;
-    font-size: 16px;
-    line-height: 1.6;
-    overflow-x: hidden;
-    cursor: none;
-  }
-
-  /* CUSTOM CURSOR */
-  .cursor {
-    position: fixed;
-    width: 10px; height: 10px;
-    background: var(--accent);
-    border-radius: 50%;
-    pointer-events: none;
-    z-index: 9999;
-    transition: transform 0.1s ease;
-    mix-blend-mode: difference;
-  }
-  .cursor-ring {
-    position: fixed;
-    width: 36px; height: 36px;
-    border: 1px solid var(--accent);
-    border-radius: 50%;
-    pointer-events: none;
-    z-index: 9998;
-    transition: transform 0.15s ease, width 0.2s, height 0.2s, opacity 0.2s;
-    opacity: 0.5;
-    mix-blend-mode: difference;
-  }
-
-  /* NOISE OVERLAY */
-  body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
-    pointer-events: none;
-    z-index: 1000;
-    opacity: 0.4;
-  }
-
-  /* NAV */
-  nav {
-    position: fixed;
-    top: 0; left: 0; right: 0;
-    z-index: 100;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 24px 48px;
-    background: rgba(10,10,10,0.85);
-    backdrop-filter: blur(20px);
-    border-bottom: 1px solid var(--border);
-  }
-
-  .nav-logo {
-    font-family: 'Syne', sans-serif;
-    font-weight: 800;
-    font-size: 18px;
-    color: var(--text);
-    text-decoration: none;
-    letter-spacing: -0.5px;
-  }
+  body { background: var(--bg); color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 16px; line-height: 1.6; overflow-x: hidden; cursor: none; }
+  .cursor { position: fixed; width: 10px; height: 10px; background: var(--accent); border-radius: 50%; pointer-events: none; z-index: 9999; mix-blend-mode: difference; }
+  .cursor-ring { position: fixed; width: 36px; height: 36px; border: 1px solid var(--accent); border-radius: 50%; pointer-events: none; z-index: 9998; transition: width 0.2s, height 0.2s, opacity 0.2s; opacity: 0.5; mix-blend-mode: difference; }
+  body::before { content: ''; position: fixed; inset: 0; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E"); pointer-events: none; z-index: 1000; opacity: 0.4; }
+  nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; display: flex; justify-content: space-between; align-items: center; padding: 24px 48px; background: rgba(10,10,10,0.85); backdrop-filter: blur(20px); border-bottom: 1px solid var(--border); }
+  .nav-logo { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 18px; color: var(--text); text-decoration: none; letter-spacing: -0.5px; }
   .nav-logo span { color: var(--accent); }
-
-  .nav-links {
-    display: flex;
-    gap: 36px;
-    list-style: none;
-  }
-  .nav-links a {
-    font-family: 'DM Mono', monospace;
-    font-size: 12px;
-    color: var(--muted);
-    text-decoration: none;
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
-    transition: color 0.2s;
-  }
+  .nav-links { display: flex; gap: 36px; list-style: none; }
+  .nav-links a { font-family: 'DM Mono', monospace; font-size: 12px; color: var(--muted); text-decoration: none; letter-spacing: 0.05em; text-transform: uppercase; transition: color 0.2s; }
   .nav-links a:hover { color: var(--accent); }
-
-  .nav-cta {
-    font-family: 'DM Mono', monospace;
-    font-size: 12px;
-    color: var(--bg);
-    background: var(--accent);
-    padding: 10px 20px;
-    text-decoration: none;
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
-    transition: opacity 0.2s;
-  }
+  .nav-cta { font-family: 'DM Mono', monospace; font-size: 12px; color: var(--bg); background: var(--accent); padding: 10px 20px; text-decoration: none; letter-spacing: 0.05em; text-transform: uppercase; transition: opacity 0.2s; }
   .nav-cta:hover { opacity: 0.85; }
-
-  /* HERO */
-  .hero {
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    padding: 120px 48px 80px;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .hero-grid {
-    position: absolute;
-    inset: 0;
-    background-image:
-      linear-gradient(rgba(0,255,136,0.03) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(0,255,136,0.03) 1px, transparent 1px);
-    background-size: 60px 60px;
-  }
-
-  .hero-glow {
-    position: absolute;
-    width: 600px; height: 600px;
-    background: radial-gradient(circle, rgba(0,255,136,0.06) 0%, transparent 70%);
-    top: -100px; right: -100px;
-    pointer-events: none;
-  }
-  .hero-glow2 {
-    position: absolute;
-    width: 400px; height: 400px;
-    background: radial-gradient(circle, rgba(0,136,255,0.04) 0%, transparent 70%);
-    bottom: 0; left: 200px;
-    pointer-events: none;
-  }
-
-  .hero-tag {
-    font-family: 'DM Mono', monospace;
-    font-size: 12px;
-    color: var(--accent);
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    margin-bottom: 24px;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-  }
-  .hero-tag::before {
-    content: '';
-    display: block;
-    width: 32px; height: 1px;
-    background: var(--accent);
-  }
-
-  .hero-title {
-    font-family: 'Syne', sans-serif;
-    font-weight: 800;
-    font-size: clamp(52px, 8vw, 96px);
-    line-height: 0.95;
-    letter-spacing: -3px;
-    color: var(--text);
-    margin-bottom: 32px;
-    position: relative;
-  }
+  .hero { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; padding: 120px 48px 80px; position: relative; overflow: hidden; }
+  .hero-grid { position: absolute; inset: 0; background-image: linear-gradient(rgba(0,255,136,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(0,255,136,0.03) 1px, transparent 1px); background-size: 60px 60px; }
+  .hero-glow { position: absolute; width: 600px; height: 600px; background: radial-gradient(circle, rgba(0,255,136,0.06) 0%, transparent 70%); top: -100px; right: -100px; pointer-events: none; }
+  .hero-glow2 { position: absolute; width: 400px; height: 400px; background: radial-gradient(circle, rgba(0,136,255,0.04) 0%, transparent 70%); bottom: 0; left: 200px; pointer-events: none; }
+  .hero-tag { font-family: 'DM Mono', monospace; font-size: 12px; color: var(--accent); letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 24px; display: flex; align-items: center; gap: 12px; }
+  .hero-tag::before { content: ''; display: block; width: 32px; height: 1px; background: var(--accent); }
+  .hero-title { font-family: 'Syne', sans-serif; font-weight: 800; font-size: clamp(52px, 8vw, 96px); line-height: 0.95; letter-spacing: -3px; color: var(--text); margin-bottom: 32px; }
   .hero-title .line2 { color: var(--accent); }
-  .hero-title .line3 {
-    -webkit-text-stroke: 1px var(--muted2);
-    color: transparent;
-  }
-
-  .hero-desc {
-    font-size: 17px;
-    color: var(--muted);
-    max-width: 480px;
-    margin-bottom: 48px;
-    line-height: 1.7;
-    font-weight: 300;
-  }
-
-  .hero-actions {
-    display: flex;
-    gap: 16px;
-    align-items: center;
-    flex-wrap: wrap;
-  }
-
-  .btn-primary {
-    font-family: 'DM Mono', monospace;
-    font-size: 13px;
-    color: var(--bg);
-    background: var(--accent);
-    padding: 14px 28px;
-    text-decoration: none;
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
-    transition: all 0.2s;
-    display: inline-block;
-  }
+  .hero-title .line3 { -webkit-text-stroke: 1px var(--muted2); color: transparent; }
+  .hero-desc { font-size: 17px; color: var(--muted); max-width: 480px; margin-bottom: 48px; line-height: 1.7; font-weight: 300; }
+  .hero-actions { display: flex; gap: 16px; align-items: center; flex-wrap: wrap; }
+  .btn-primary { font-family: 'DM Mono', monospace; font-size: 13px; color: var(--bg); background: var(--accent); padding: 14px 28px; text-decoration: none; letter-spacing: 0.05em; text-transform: uppercase; transition: all 0.2s; display: inline-block; }
   .btn-primary:hover { opacity: 0.85; transform: translateY(-1px); }
-
-  .btn-secondary {
-    font-family: 'DM Mono', monospace;
-    font-size: 13px;
-    color: var(--text);
-    border: 1px solid var(--border);
-    padding: 14px 28px;
-    text-decoration: none;
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
-    transition: all 0.2s;
-    display: inline-block;
-  }
+  .btn-secondary { font-family: 'DM Mono', monospace; font-size: 13px; color: var(--text); border: 1px solid var(--border); padding: 14px 28px; text-decoration: none; letter-spacing: 0.05em; text-transform: uppercase; transition: all 0.2s; display: inline-block; }
   .btn-secondary:hover { border-color: var(--accent); color: var(--accent); }
-
-  .hero-stats {
-    position: absolute;
-    right: 48px;
-    bottom: 80px;
-    display: flex;
-    flex-direction: column;
-    gap: 32px;
-    text-align: right;
-  }
-  .stat-num {
-    font-family: 'Syne', sans-serif;
-    font-size: 36px;
-    font-weight: 800;
-    color: var(--text);
-    line-height: 1;
-  }
+  .hero-stats { position: absolute; right: 48px; bottom: 80px; display: flex; flex-direction: column; gap: 32px; text-align: right; }
+  .stat-num { font-family: 'Syne', sans-serif; font-size: 36px; font-weight: 800; color: var(--text); line-height: 1; }
   .stat-num span { color: var(--accent); }
-  .stat-label {
-    font-family: 'DM Mono', monospace;
-    font-size: 11px;
-    color: var(--muted);
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-  }
-
-  .scroll-indicator {
-    position: absolute;
-    bottom: 32px;
-    left: 48px;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    font-family: 'DM Mono', monospace;
-    font-size: 11px;
-    color: var(--muted);
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-  }
-  .scroll-line {
-    width: 48px; height: 1px;
-    background: var(--muted2);
-    position: relative;
-    overflow: hidden;
-  }
-  .scroll-line::after {
-    content: '';
-    position: absolute;
-    top: 0; left: -100%;
-    width: 100%; height: 100%;
-    background: var(--accent);
-    animation: scrollLine 2s infinite;
-  }
-  @keyframes scrollLine {
-    0% { left: -100%; }
-    100% { left: 100%; }
-  }
-
-  /* SECTION COMMON */
+  .stat-label { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em; }
+  .scroll-indicator { position: absolute; bottom: 32px; left: 48px; display: flex; align-items: center; gap: 12px; font-family: 'DM Mono', monospace; font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em; }
+  .scroll-line { width: 48px; height: 1px; background: var(--muted2); position: relative; overflow: hidden; }
+  .scroll-line::after { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: var(--accent); animation: scrollLine 2s infinite; }
+  @keyframes scrollLine { 0% { left: -100%; } 100% { left: 100%; } }
   section { padding: 120px 48px; }
-
-  .section-tag {
-    font-family: 'DM Mono', monospace;
-    font-size: 11px;
-    color: var(--accent);
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    margin-bottom: 16px;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-  }
-  .section-tag::before {
-    content: '';
-    display: block;
-    width: 24px; height: 1px;
-    background: var(--accent);
-  }
-
-  .section-title {
-    font-family: 'Syne', sans-serif;
-    font-weight: 800;
-    font-size: clamp(32px, 5vw, 52px);
-    letter-spacing: -2px;
-    color: var(--text);
-    line-height: 1;
-    margin-bottom: 64px;
-  }
-
-  /* SERVICES */
+  .section-tag { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--accent); letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 16px; display: flex; align-items: center; gap: 12px; }
+  .section-tag::before { content: ''; display: block; width: 24px; height: 1px; background: var(--accent); }
+  .section-title { font-family: 'Syne', sans-serif; font-weight: 800; font-size: clamp(32px, 5vw, 52px); letter-spacing: -2px; color: var(--text); line-height: 1; margin-bottom: 64px; }
   .services { background: var(--bg); border-top: 1px solid var(--border); }
-
-  .services-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 1px;
-    background: var(--border);
-    border: 1px solid var(--border);
-    margin-top: 64px;
-  }
-
-  .service-card {
-    background: var(--surface);
-    padding: 40px 36px;
-    position: relative;
-    overflow: hidden;
-    transition: background 0.3s;
-  }
-  .service-card::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0;
-    width: 0; height: 2px;
-    background: var(--accent);
-    transition: width 0.4s ease;
-  }
+  .services-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1px; background: var(--border); border: 1px solid var(--border); }
+  .service-card { background: var(--surface); padding: 40px 36px; position: relative; overflow: hidden; transition: background 0.3s; }
+  .service-card::before { content: ''; position: absolute; top: 0; left: 0; width: 0; height: 2px; background: var(--accent); transition: width 0.4s ease; }
   .service-card:hover { background: var(--surface2); }
   .service-card:hover::before { width: 100%; }
-
-  .service-num {
-    font-family: 'DM Mono', monospace;
-    font-size: 11px;
-    color: var(--muted2);
-    letter-spacing: 0.1em;
-    margin-bottom: 24px;
-  }
-
-  .service-icon {
-    font-size: 28px;
-    margin-bottom: 20px;
-    display: block;
-  }
-
-  .service-title {
-    font-family: 'Syne', sans-serif;
-    font-weight: 700;
-    font-size: 20px;
-    color: var(--text);
-    margin-bottom: 12px;
-    letter-spacing: -0.5px;
-  }
-
-  .service-desc {
-    font-size: 14px;
-    color: var(--muted);
-    line-height: 1.7;
-    margin-bottom: 24px;
-    font-weight: 300;
-  }
-
-  .service-tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-  }
-  .tag {
-    font-family: 'DM Mono', monospace;
-    font-size: 10px;
-    color: var(--muted);
-    border: 1px solid var(--border);
-    padding: 4px 10px;
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
-    transition: all 0.2s;
-  }
-  .service-card:hover .tag { border-color: var(--muted2); }
-
-  /* PORTFOLIO */
+  .service-num { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--muted2); letter-spacing: 0.1em; margin-bottom: 24px; }
+  .service-icon { font-size: 28px; margin-bottom: 20px; display: block; }
+  .service-title { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 20px; color: var(--text); margin-bottom: 12px; letter-spacing: -0.5px; }
+  .service-desc { font-size: 14px; color: var(--muted); line-height: 1.7; margin-bottom: 24px; font-weight: 300; }
+  .service-tags { display: flex; flex-wrap: wrap; gap: 8px; }
+  .tag { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--muted); border: 1px solid var(--border); padding: 4px 10px; letter-spacing: 0.05em; text-transform: uppercase; }
   .portfolio { background: var(--surface); border-top: 1px solid var(--border); }
-
-  .portfolio-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-    gap: 24px;
-  }
-
-  .portfolio-card {
-    background: var(--bg);
-    border: 1px solid var(--border);
-    overflow: hidden;
-    transition: border-color 0.3s, transform 0.3s;
-    position: relative;
-  }
-  .portfolio-card:hover {
-    border-color: var(--accent);
-    transform: translateY(-4px);
-  }
-
-  .portfolio-thumb {
-    height: 200px;
-    position: relative;
-    overflow: hidden;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
+  .portfolio-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 24px; }
+  .portfolio-card { background: var(--bg); border: 1px solid var(--border); overflow: hidden; transition: border-color 0.3s, transform 0.3s; position: relative; text-decoration: none; display: block; cursor: pointer; }
+  .portfolio-card:hover { border-color: var(--accent); transform: translateY(-4px); }
+  .portfolio-thumb { height: 200px; position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center; }
   .thumb-data { background: linear-gradient(135deg, #1E2761 0%, #0a0a2e 100%); }
   .thumb-hr { background: linear-gradient(135deg, #0D2318 0%, #0a0a0a 100%); }
   .thumb-clean { background: linear-gradient(135deg, #0F3460 0%, #0a0a0a 100%); }
   .thumb-web { background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); }
-
-  .thumb-visual {
-    position: absolute;
-    inset: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 64px;
-    opacity: 0.15;
-  }
-
-  .thumb-label {
-    font-family: 'Syne', sans-serif;
-    font-weight: 800;
-    font-size: 28px;
-    color: rgba(255,255,255,0.8);
-    letter-spacing: -1px;
-    text-align: center;
-    z-index: 1;
-  }
-
-  .thumb-accent {
-    position: absolute;
-    bottom: 0; left: 0; right: 0;
-    height: 3px;
-    background: var(--accent);
-    transform: scaleX(0);
-    transition: transform 0.3s;
-    transform-origin: left;
-  }
+  .thumb-visual { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 64px; opacity: 0.15; }
+  .thumb-label { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 28px; color: rgba(255,255,255,0.8); letter-spacing: -1px; text-align: center; z-index: 1; }
+  .thumb-accent { position: absolute; bottom: 0; left: 0; right: 0; height: 3px; background: var(--accent); transform: scaleX(0); transition: transform 0.3s; transform-origin: left; }
   .portfolio-card:hover .thumb-accent { transform: scaleX(1); }
-
-  .portfolio-info {
-    padding: 24px 28px;
-  }
-
-  .portfolio-category {
-    font-family: 'DM Mono', monospace;
-    font-size: 10px;
-    color: var(--accent);
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    margin-bottom: 10px;
-  }
-
-  .portfolio-title {
-    font-family: 'Syne', sans-serif;
-    font-weight: 700;
-    font-size: 18px;
-    color: var(--text);
-    margin-bottom: 10px;
-    letter-spacing: -0.5px;
-  }
-
-  .portfolio-desc {
-    font-size: 13px;
-    color: var(--muted);
-    line-height: 1.6;
-    margin-bottom: 20px;
-    font-weight: 300;
-  }
-
-  .portfolio-stack {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
-  }
-  .stack-tag {
-    font-family: 'DM Mono', monospace;
-    font-size: 10px;
-    color: var(--muted);
-    background: var(--surface2);
-    padding: 3px 8px;
-    letter-spacing: 0.05em;
-  }
-
-  /* ABOUT */
+  .portfolio-info { padding: 24px 28px; }
+  .portfolio-category { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--accent); letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 10px; }
+  .portfolio-title { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 18px; color: var(--text); margin-bottom: 10px; letter-spacing: -0.5px; }
+  .portfolio-desc { font-size: 13px; color: var(--muted); line-height: 1.6; margin-bottom: 20px; font-weight: 300; }
+  .portfolio-stack { display: flex; flex-wrap: wrap; gap: 6px; }
+  .stack-tag { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--muted); background: var(--surface2); padding: 3px 8px; letter-spacing: 0.05em; }
+  .view-btn { display: inline-block; margin-top: 16px; font-family: 'DM Mono', monospace; font-size: 11px; color: var(--accent); letter-spacing: 0.1em; text-transform: uppercase; }
   .about { background: var(--bg); border-top: 1px solid var(--border); }
-
-  .about-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 80px;
-    align-items: start;
-  }
-
-  .about-text p {
-    font-size: 16px;
-    color: var(--muted);
-    line-height: 1.8;
-    margin-bottom: 20px;
-    font-weight: 300;
-  }
+  .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start; }
+  .about-text p { font-size: 16px; color: var(--muted); line-height: 1.8; margin-bottom: 20px; font-weight: 300; }
   .about-text p strong { color: var(--text); font-weight: 500; }
   .about-text p .accent { color: var(--accent); }
-
   .skills-section { margin-top: 48px; }
-  .skills-title {
-    font-family: 'DM Mono', monospace;
-    font-size: 11px;
-    color: var(--muted);
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    margin-bottom: 20px;
-  }
-
-  .skills-list {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-  }
-  .skill-pill {
-    font-family: 'DM Mono', monospace;
-    font-size: 11px;
-    color: var(--text);
-    border: 1px solid var(--border);
-    padding: 6px 14px;
-    transition: all 0.2s;
-    letter-spacing: 0.05em;
-  }
+  .skills-title { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--muted); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 20px; }
+  .skills-list { display: flex; flex-wrap: wrap; gap: 10px; }
+  .skill-pill { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--text); border: 1px solid var(--border); padding: 6px 14px; transition: all 0.2s; letter-spacing: 0.05em; }
   .skill-pill:hover { border-color: var(--accent); color: var(--accent); }
-
-  .about-right {}
-  .about-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    padding: 36px;
-    margin-bottom: 16px;
-    position: relative;
-  }
-  .about-card::before {
-    content: '';
-    position: absolute;
-    left: 0; top: 0;
-    width: 3px; height: 100%;
-    background: var(--accent);
-  }
-
-  .card-label {
-    font-family: 'DM Mono', monospace;
-    font-size: 10px;
-    color: var(--muted);
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    margin-bottom: 12px;
-  }
-  .card-value {
-    font-family: 'Syne', sans-serif;
-    font-weight: 700;
-    font-size: 22px;
-    color: var(--text);
-    letter-spacing: -0.5px;
-  }
-  .card-sub {
-    font-size: 13px;
-    color: var(--muted);
-    margin-top: 4px;
-    font-weight: 300;
-  }
-
-  /* CONTACT */
-  .contact {
-    background: var(--surface);
-    border-top: 1px solid var(--border);
-    text-align: center;
-  }
-
-  .contact-title {
-    font-family: 'Syne', sans-serif;
-    font-weight: 800;
-    font-size: clamp(40px, 7vw, 80px);
-    letter-spacing: -3px;
-    line-height: 0.95;
-    margin-bottom: 32px;
-  }
-  .contact-title .outline {
-    -webkit-text-stroke: 1px var(--muted2);
-    color: transparent;
-  }
-
-  .contact-sub {
-    font-size: 16px;
-    color: var(--muted);
-    max-width: 480px;
-    margin: 0 auto 48px;
-    font-weight: 300;
-    line-height: 1.7;
-  }
-
-  .contact-links {
-    display: flex;
-    justify-content: center;
-    gap: 16px;
-    flex-wrap: wrap;
-    margin-bottom: 80px;
-  }
-
-  .contact-link {
-    font-family: 'DM Mono', monospace;
-    font-size: 12px;
-    color: var(--muted);
-    border: 1px solid var(--border);
-    padding: 12px 24px;
-    text-decoration: none;
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
-    transition: all 0.2s;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
+  .about-card { background: var(--surface); border: 1px solid var(--border); padding: 36px; margin-bottom: 16px; position: relative; }
+  .about-card::before { content: ''; position: absolute; left: 0; top: 0; width: 3px; height: 100%; background: var(--accent); }
+  .card-label { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--muted); letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 12px; }
+  .card-value { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 22px; color: var(--text); letter-spacing: -0.5px; }
+  .card-sub { font-size: 13px; color: var(--muted); margin-top: 4px; font-weight: 300; }
+  .contact { background: var(--surface); border-top: 1px solid var(--border); text-align: center; }
+  .contact-title { font-family: 'Syne', sans-serif; font-weight: 800; font-size: clamp(40px, 7vw, 80px); letter-spacing: -3px; line-height: 0.95; margin-bottom: 32px; }
+  .contact-title .outline { -webkit-text-stroke: 1px var(--muted2); color: transparent; }
+  .contact-sub { font-size: 16px; color: var(--muted); max-width: 480px; margin: 0 auto 48px; font-weight: 300; line-height: 1.7; }
+  .contact-links { display: flex; justify-content: center; gap: 16px; flex-wrap: wrap; margin-bottom: 80px; }
+  .contact-link { font-family: 'DM Mono', monospace; font-size: 12px; color: var(--muted); border: 1px solid var(--border); padding: 12px 24px; text-decoration: none; letter-spacing: 0.05em; text-transform: uppercase; transition: all 0.2s; display: flex; align-items: center; gap: 8px; }
   .contact-link:hover { border-color: var(--accent); color: var(--accent); }
-  .contact-link.primary {
-    background: var(--accent);
-    color: var(--bg);
-    border-color: var(--accent);
-  }
+  .contact-link.primary { background: var(--accent); color: var(--bg); border-color: var(--accent); }
   .contact-link.primary:hover { opacity: 0.85; }
-
-  /* FOOTER */
-  footer {
-    padding: 24px 48px;
-    border-top: 1px solid var(--border);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  .footer-left {
-    font-family: 'DM Mono', monospace;
-    font-size: 11px;
-    color: var(--muted);
-    letter-spacing: 0.05em;
-  }
+  footer { padding: 24px 48px; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+  .footer-left { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--muted); letter-spacing: 0.05em; }
   .footer-left span { color: var(--accent); }
-  .footer-right {
-    font-family: 'DM Mono', monospace;
-    font-size: 11px;
-    color: var(--muted2);
-    letter-spacing: 0.05em;
-  }
-
-  /* MARQUEE */
-  .marquee-section {
-    overflow: hidden;
-    border-top: 1px solid var(--border);
-    border-bottom: 1px solid var(--border);
-    padding: 20px 0;
-    background: var(--surface);
-  }
-  .marquee-track {
-    display: flex;
-    gap: 48px;
-    animation: marquee 20s linear infinite;
-    white-space: nowrap;
-  }
-  .marquee-item {
-    font-family: 'Syne', sans-serif;
-    font-size: 13px;
-    font-weight: 600;
-    color: var(--muted2);
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    flex-shrink: 0;
-    display: flex;
-    align-items: center;
-    gap: 48px;
-  }
-  .marquee-dot {
-    width: 4px; height: 4px;
-    background: var(--accent);
-    border-radius: 50%;
-    flex-shrink: 0;
-  }
-  @keyframes marquee {
-    0% { transform: translateX(0); }
-    100% { transform: translateX(-50%); }
-  }
-
-  /* ANIMATIONS */
-  .fade-up {
-    opacity: 0;
-    transform: translateY(30px);
-    transition: opacity 0.7s ease, transform 0.7s ease;
-  }
-  .fade-up.visible {
-    opacity: 1;
-    transform: translateY(0);
-  }
-
-  @media (max-width: 768px) {
-    nav { padding: 20px 24px; }
-    .nav-links { display: none; }
-    .hero { padding: 100px 24px 60px; }
-    .hero-stats { display: none; }
-    section { padding: 80px 24px; }
-    .about-grid { grid-template-columns: 1fr; gap: 48px; }
-    footer { flex-direction: column; gap: 12px; text-align: center; }
-  }
+  .footer-right { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--muted2); letter-spacing: 0.05em; }
+  .marquee-section { overflow: hidden; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); padding: 20px 0; background: var(--surface); }
+  .marquee-track { display: flex; gap: 48px; animation: marquee 20s linear infinite; white-space: nowrap; }
+  .marquee-item { font-family: 'Syne', sans-serif; font-size: 13px; font-weight: 600; color: var(--muted2); letter-spacing: 0.1em; text-transform: uppercase; flex-shrink: 0; display: flex; align-items: center; gap: 48px; }
+  .marquee-dot { width: 4px; height: 4px; background: var(--accent); border-radius: 50%; flex-shrink: 0; }
+  @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+  .fade-up { opacity: 0; transform: translateY(30px); transition: opacity 0.7s ease, transform 0.7s ease; }
+  .fade-up.visible { opacity: 1; transform: translateY(0); }
+  @media (max-width: 768px) { nav { padding: 20px 24px; } .nav-links { display: none; } .hero { padding: 100px 24px 60px; } .hero-stats { display: none; } section { padding: 80px 24px; } .about-grid { grid-template-columns: 1fr; gap: 48px; } footer { flex-direction: column; gap: 12px; text-align: center; } }
 </style>
 </head>
 <body>
-
 <div class="cursor" id="cursor"></div>
 <div class="cursor-ring" id="cursorRing"></div>
-
-<!-- NAV -->
 <nav>
   <a href="#" class="nav-logo">build<span>TN</span></a>
   <ul class="nav-links">
@@ -748,351 +141,128 @@
   </ul>
   <a href="#contact" class="nav-cta">Hire Me</a>
 </nav>
-
-<!-- HERO -->
 <section class="hero">
   <div class="hero-grid"></div>
   <div class="hero-glow"></div>
   <div class="hero-glow2"></div>
-
   <div class="hero-tag">Available for freelance work</div>
-
   <h1 class="hero-title">
     <div>Borhen</div>
     <div class="line2">Mejri.</div>
     <div class="line3">Data & Dev.</div>
   </h1>
-
-  <p class="hero-desc">
-    Data Analyst & Developer based in Tunisia.
-    I turn raw data into dashboards, automate workflows, and build web applications — remotely, worldwide.
-  </p>
-
+  <p class="hero-desc">Data Analyst & Developer based in Tunisia. I turn raw data into dashboards, automate workflows, and build web applications — remotely, worldwide.</p>
   <div class="hero-actions">
     <a href="#portfolio" class="btn-primary">View Work</a>
     <a href="#contact" class="btn-secondary">Get in Touch</a>
   </div>
-
   <div class="hero-stats">
-    <div>
-      <div class="stat-num">170<span>K+</span></div>
-      <div class="stat-label">Rows Processed</div>
-    </div>
-    <div>
-      <div class="stat-num">5<span>+</span></div>
-      <div class="stat-label">Services Offered</div>
-    </div>
-    <div>
-      <div class="stat-num">95<span>th</span></div>
-      <div class="stat-label">Percentile — Sheets Test</div>
-    </div>
+    <div><div class="stat-num">170<span>K+</span></div><div class="stat-label">Rows Processed</div></div>
+    <div><div class="stat-num">5<span>+</span></div><div class="stat-label">Services Offered</div></div>
+    <div><div class="stat-num">95<span>th</span></div><div class="stat-label">Percentile — Sheets Test</div></div>
   </div>
-
-  <div class="scroll-indicator">
-    <div class="scroll-line"></div>
-    Scroll to explore
-  </div>
+  <div class="scroll-indicator"><div class="scroll-line"></div>Scroll to explore</div>
 </section>
-
-<!-- MARQUEE -->
 <div class="marquee-section">
   <div class="marquee-track">
     <div class="marquee-item">Power BI <div class="marquee-dot"></div> Python <div class="marquee-dot"></div> SQL <div class="marquee-dot"></div> Django <div class="marquee-dot"></div> Data Cleaning <div class="marquee-dot"></div> ETL Pipelines <div class="marquee-dot"></div> Machine Learning <div class="marquee-dot"></div> Web Scraping <div class="marquee-dot"></div> Dashboards <div class="marquee-dot"></div> Presentations <div class="marquee-dot"></div></div>
     <div class="marquee-item">Power BI <div class="marquee-dot"></div> Python <div class="marquee-dot"></div> SQL <div class="marquee-dot"></div> Django <div class="marquee-dot"></div> Data Cleaning <div class="marquee-dot"></div> ETL Pipelines <div class="marquee-dot"></div> Machine Learning <div class="marquee-dot"></div> Web Scraping <div class="marquee-dot"></div> Dashboards <div class="marquee-dot"></div> Presentations <div class="marquee-dot"></div></div>
   </div>
 </div>
-
-<!-- SERVICES -->
 <section class="services" id="services">
   <div class="section-tag">What I Do</div>
   <h2 class="section-title">Services</h2>
-
   <div class="services-grid">
-    <div class="service-card fade-up">
-      <div class="service-num">01</div>
-      <span class="service-icon">📊</span>
-      <div class="service-title">Data Analysis & Dashboards</div>
-      <div class="service-desc">Transform your raw data into clear, interactive Power BI dashboards with KPIs, trends, and actionable insights. From cleaning to visualization.</div>
-      <div class="service-tags">
-        <span class="tag">Power BI</span>
-        <span class="tag">SQL</span>
-        <span class="tag">Excel</span>
-        <span class="tag">Python</span>
-      </div>
-    </div>
-
-    <div class="service-card fade-up">
-      <div class="service-num">02</div>
-      <span class="service-icon">🐍</span>
-      <div class="service-title">Python Automation</div>
-      <div class="service-desc">Automate repetitive tasks, clean messy datasets, build ETL pipelines, and scrape data from websites. Save hours every week.</div>
-      <div class="service-tags">
-        <span class="tag">Pandas</span>
-        <span class="tag">NumPy</span>
-        <span class="tag">Selenium</span>
-        <span class="tag">BeautifulSoup</span>
-      </div>
-    </div>
-
-    <div class="service-card fade-up">
-      <div class="service-num">03</div>
-      <span class="service-icon">🌐</span>
-      <div class="service-title">Web Development</div>
-      <div class="service-desc">Build clean, functional web applications and websites using Django and Bootstrap. From landing pages to full CRUD applications with databases.</div>
-      <div class="service-tags">
-        <span class="tag">Django</span>
-        <span class="tag">Python</span>
-        <span class="tag">Bootstrap</span>
-        <span class="tag">SQL Server</span>
-      </div>
-    </div>
-
-    <div class="service-card fade-up">
-      <div class="service-num">04</div>
-      <span class="service-icon">🔍</span>
-      <div class="service-title">Web Scraping</div>
-      <div class="service-desc">Extract data from any website and deliver it clean in Excel or a database. Product prices, listings, contacts — structured and ready to use.</div>
-      <div class="service-tags">
-        <span class="tag">Python</span>
-        <span class="tag">Selenium</span>
-        <span class="tag">Excel Output</span>
-      </div>
-    </div>
-
-    <div class="service-card fade-up">
-      <div class="service-num">05</div>
-      <span class="service-icon">📑</span>
-      <div class="service-title">PowerPoint Presentations</div>
-      <div class="service-desc">Professional, visually polished presentations for business reports, pitches, and academic projects. Clean design, clear structure, delivered fast.</div>
-      <div class="service-tags">
-        <span class="tag">PowerPoint</span>
-        <span class="tag">Design</span>
-        <span class="tag">Data Viz</span>
-      </div>
-    </div>
-
-    <div class="service-card fade-up">
-      <div class="service-num">06</div>
-      <span class="service-icon">🧹</span>
-      <div class="service-title">Data Cleaning</div>
-      <div class="service-desc">Fix messy Excel files, remove duplicates, standardize formats, handle missing values — give me your raw file, get back a clean, analysis-ready dataset.</div>
-      <div class="service-tags">
-        <span class="tag">Python</span>
-        <span class="tag">Pandas</span>
-        <span class="tag">Excel</span>
-        <span class="tag">SQL</span>
-      </div>
-    </div>
+    <div class="service-card fade-up"><div class="service-num">01</div><span class="service-icon">📊</span><div class="service-title">Data Analysis & Dashboards</div><div class="service-desc">Transform your raw data into clear, interactive Power BI dashboards with KPIs, trends, and actionable insights.</div><div class="service-tags"><span class="tag">Power BI</span><span class="tag">SQL</span><span class="tag">Excel</span><span class="tag">Python</span></div></div>
+    <div class="service-card fade-up"><div class="service-num">02</div><span class="service-icon">🐍</span><div class="service-title">Python Automation</div><div class="service-desc">Automate repetitive tasks, clean messy datasets, build ETL pipelines, and scrape data from websites.</div><div class="service-tags"><span class="tag">Pandas</span><span class="tag">NumPy</span><span class="tag">Selenium</span><span class="tag">BeautifulSoup</span></div></div>
+    <div class="service-card fade-up"><div class="service-num">03</div><span class="service-icon">🌐</span><div class="service-title">Web Development</div><div class="service-desc">Build clean, functional web applications using Django and Bootstrap. From landing pages to full CRUD apps.</div><div class="service-tags"><span class="tag">Django</span><span class="tag">Python</span><span class="tag">Bootstrap</span><span class="tag">SQL Server</span></div></div>
+    <div class="service-card fade-up"><div class="service-num">04</div><span class="service-icon">🔍</span><div class="service-title">Web Scraping</div><div class="service-desc">Extract data from any website and deliver it clean in Excel or a database. Ready to use.</div><div class="service-tags"><span class="tag">Python</span><span class="tag">Selenium</span><span class="tag">Excel Output</span></div></div>
+    <div class="service-card fade-up"><div class="service-num">05</div><span class="service-icon">📑</span><div class="service-title">PowerPoint Presentations</div><div class="service-desc">Professional, visually polished presentations for business reports, pitches, and academic projects.</div><div class="service-tags"><span class="tag">PowerPoint</span><span class="tag">Design</span><span class="tag">Data Viz</span></div></div>
+    <div class="service-card fade-up"><div class="service-num">06</div><span class="service-icon">🧹</span><div class="service-title">Data Cleaning</div><div class="service-desc">Fix messy Excel files, remove duplicates, standardize formats — get back a clean, analysis-ready dataset.</div><div class="service-tags"><span class="tag">Python</span><span class="tag">Pandas</span><span class="tag">Excel</span><span class="tag">SQL</span></div></div>
   </div>
 </section>
-
-<!-- PORTFOLIO -->
 <section class="portfolio" id="portfolio">
   <div class="section-tag">Recent Work</div>
   <h2 class="section-title">Portfolio</h2>
-
   <div class="portfolio-grid">
-
-    <div class="portfolio-card fade-up">
-      <div class="portfolio-thumb thumb-data">
-        <div class="thumb-visual">📊</div>
-        <div class="thumb-label">Sales<br>Analytics</div>
-        <div class="thumb-accent"></div>
-      </div>
-      <div class="portfolio-info">
-        <div class="portfolio-category">Data Analysis</div>
-        <div class="portfolio-title">Sales Dashboard Analysis</div>
-        <div class="portfolio-desc">Full retail performance analysis for 2024 — KPI summary, regional breakdown, top products, and trend insights across 12 months.</div>
-        <div class="portfolio-stack">
-          <span class="stack-tag">Power BI</span>
-          <span class="stack-tag">Python</span>
-          <span class="stack-tag">SQL</span>
-          <span class="stack-tag">PowerPoint</span>
-        </div>
-      </div>
-    </div>
-
-    <div class="portfolio-card fade-up">
-      <div class="portfolio-thumb thumb-clean">
-        <div class="thumb-visual">🧹</div>
-        <div class="thumb-label">Data<br>Cleaning</div>
-        <div class="thumb-accent"></div>
-      </div>
-      <div class="portfolio-info">
-        <div class="portfolio-category">Data Engineering</div>
-        <div class="portfolio-title">Industrial Data Cleaning Pipeline</div>
-        <div class="portfolio-desc">Cleaned 170,000+ rows of production quality data — reduced 844 defect categories to 668, removed 3,847 duplicates, standardized all formats.</div>
-        <div class="portfolio-stack">
-          <span class="stack-tag">Python</span>
-          <span class="stack-tag">Pandas</span>
-          <span class="stack-tag">RapidFuzz</span>
-          <span class="stack-tag">SQL Server</span>
-        </div>
-      </div>
-    </div>
-
-    <div class="portfolio-card fade-up">
-      <div class="portfolio-thumb thumb-hr">
-        <div class="thumb-visual">👥</div>
-        <div class="thumb-label">HR<br>Analytics</div>
-        <div class="thumb-accent"></div>
-      </div>
-      <div class="portfolio-info">
-        <div class="portfolio-category">Business Intelligence</div>
-        <div class="portfolio-title">HR Analytics Report</div>
-        <div class="portfolio-desc">15-slide workforce analysis covering turnover, recruitment funnel, performance distribution, salary benchmarking, and D&I metrics.</div>
-        <div class="portfolio-stack">
-          <span class="stack-tag">Power BI</span>
-          <span class="stack-tag">Python</span>
-          <span class="stack-tag">PowerPoint</span>
-          <span class="stack-tag">SQL</span>
-        </div>
-      </div>
-    </div>
-
-    <div class="portfolio-card fade-up">
-      <div class="portfolio-thumb thumb-web">
-        <div class="thumb-visual">🌐</div>
-        <div class="thumb-label">Web<br>App</div>
-        <div class="thumb-accent"></div>
-      </div>
-      <div class="portfolio-info">
-        <div class="portfolio-category">Web Development</div>
-        <div class="portfolio-title">Industrial Analytics Web Platform</div>
-        <div class="portfolio-desc">Full Django web application with Power BI dashboard integration, CRUD data management, pagination for 140K+ records, and SQL Server backend.</div>
-        <div class="portfolio-stack">
-          <span class="stack-tag">Django</span>
-          <span class="stack-tag">Python</span>
-          <span class="stack-tag">Bootstrap 5</span>
-          <span class="stack-tag">SQL Server</span>
-        </div>
-      </div>
-    </div>
-
+    <a href="project-sales.html" class="portfolio-card fade-up">
+      <div class="portfolio-thumb thumb-data"><div class="thumb-visual">📊</div><div class="thumb-label">Sales<br>Analytics</div><div class="thumb-accent"></div></div>
+      <div class="portfolio-info"><div class="portfolio-category">Data Analysis</div><div class="portfolio-title">Sales Dashboard Analysis</div><div class="portfolio-desc">Full retail performance analysis — KPI summary, regional breakdown, top products, and trend insights.</div><div class="portfolio-stack"><span class="stack-tag">Power BI</span><span class="stack-tag">Python</span><span class="stack-tag">SQL</span><span class="stack-tag">PowerPoint</span></div><div class="view-btn">View Project →</div></div>
+    </a>
+    <a href="project-cleaning.html" class="portfolio-card fade-up">
+      <div class="portfolio-thumb thumb-clean"><div class="thumb-visual">🧹</div><div class="thumb-label">Data<br>Cleaning</div><div class="thumb-accent"></div></div>
+      <div class="portfolio-info"><div class="portfolio-category">Data Engineering</div><div class="portfolio-title">Industrial Data Cleaning Pipeline</div><div class="portfolio-desc">Cleaned 170,000+ rows — reduced 844 defect categories to 668, removed 3,847 duplicates.</div><div class="portfolio-stack"><span class="stack-tag">Python</span><span class="stack-tag">Pandas</span><span class="stack-tag">RapidFuzz</span><span class="stack-tag">SQL Server</span></div><div class="view-btn">View Project →</div></div>
+    </a>
+    <a href="project-hr.html" class="portfolio-card fade-up">
+      <div class="portfolio-thumb thumb-hr"><div class="thumb-visual">👥</div><div class="thumb-label">HR<br>Analytics</div><div class="thumb-accent"></div></div>
+      <div class="portfolio-info"><div class="portfolio-category">Business Intelligence</div><div class="portfolio-title">HR Analytics Report</div><div class="portfolio-desc">15-slide workforce analysis — turnover, recruitment funnel, performance, salary benchmarking.</div><div class="portfolio-stack"><span class="stack-tag">Power BI</span><span class="stack-tag">Python</span><span class="stack-tag">PowerPoint</span><span class="stack-tag">SQL</span></div><div class="view-btn">View Project →</div></div>
+    </a>
+    <a href="mailto:borhenmejri5@gmail.com" class="portfolio-card fade-up">
+      <div class="portfolio-thumb thumb-web"><div class="thumb-visual">🌐</div><div class="thumb-label">Web<br>App</div><div class="thumb-accent"></div></div>
+      <div class="portfolio-info"><div class="portfolio-category">Web Development</div><div class="portfolio-title">Industrial Analytics Web Platform</div><div class="portfolio-desc">Django app with Power BI integration, CRUD management, pagination for 140K+ records, SQL Server backend.</div><div class="portfolio-stack"><span class="stack-tag">Django</span><span class="stack-tag">Python</span><span class="stack-tag">Bootstrap 5</span><span class="stack-tag">SQL Server</span></div><div class="view-btn">Request Demo →</div></div>
+    </a>
   </div>
 </section>
-
-<!-- ABOUT -->
 <section class="about" id="about">
   <div class="section-tag">About Me</div>
   <h2 class="section-title">Who I Am</h2>
-
   <div class="about-grid">
     <div class="about-text fade-up">
       <p>I'm <strong>Borhen Mejri</strong>, a final-year <strong>Business Computing student (BI specialization)</strong> at Esprit School of Business in Tunisia.</p>
       <p>I spent the last several months building a complete <strong>industrial data analytics system</strong> for CASCO Automotive Tunisia (Amphenol Group) — processing 170,000+ rows of production data, building ETL pipelines, ML models, and Power BI dashboards used by management.</p>
       <p>I work remotely, deliver fast, and communicate clearly. I treat every freelance project the same way I treat real enterprise work — <span class="accent">seriously</span>.</p>
       <p>Based in Tunisia, available worldwide. Fluent in English, French, and Arabic.</p>
-
       <div class="skills-section">
         <div class="skills-title">Technical Stack</div>
         <div class="skills-list">
-          <span class="skill-pill">Python</span>
-          <span class="skill-pill">Pandas</span>
-          <span class="skill-pill">Power BI</span>
-          <span class="skill-pill">SQL Server</span>
-          <span class="skill-pill">Django</span>
-          <span class="skill-pill">NumPy</span>
-          <span class="skill-pill">SSIS / ETL</span>
-          <span class="skill-pill">Bootstrap</span>
-          <span class="skill-pill">Google Sheets</span>
-          <span class="skill-pill">Excel</span>
-          <span class="skill-pill">Scikit-learn</span>
-          <span class="skill-pill">Prophet</span>
+          <span class="skill-pill">Python</span><span class="skill-pill">Pandas</span><span class="skill-pill">Power BI</span><span class="skill-pill">SQL Server</span><span class="skill-pill">Django</span><span class="skill-pill">NumPy</span><span class="skill-pill">SSIS / ETL</span><span class="skill-pill">Bootstrap</span><span class="skill-pill">Google Sheets</span><span class="skill-pill">Excel</span><span class="skill-pill">Scikit-learn</span><span class="skill-pill">Prophet</span>
         </div>
       </div>
     </div>
-
-    <div class="about-right fade-up">
-      <div class="about-card">
-        <div class="card-label">Education</div>
-        <div class="card-value">Business Computing — BI</div>
-        <div class="card-sub">Esprit School of Business, Tunisia • 2025</div>
-      </div>
-      <div class="about-card">
-        <div class="card-label">Experience</div>
-        <div class="card-value">Data Analyst Intern</div>
-        <div class="card-sub">CASCO Automotive Tunisia (Amphenol Group) • 2025</div>
-      </div>
-      <div class="about-card">
-        <div class="card-label">Certified</div>
-        <div class="card-value">Google Sheets — 95th Percentile</div>
-        <div class="card-sub">TestGorilla Verified • May 2026</div>
-      </div>
-      <div class="about-card">
-        <div class="card-label">Languages</div>
-        <div class="card-value">Arabic • French • English</div>
-        <div class="card-sub">Available for international clients</div>
-      </div>
+    <div class="fade-up">
+      <div class="about-card"><div class="card-label">Education</div><div class="card-value">Business Computing — BI</div><div class="card-sub">Esprit School of Business, Tunisia • 2025</div></div>
+      <div class="about-card"><div class="card-label">Experience</div><div class="card-value">Data Analyst Intern</div><div class="card-sub">CASCO Automotive Tunisia (Amphenol Group) • 2025</div></div>
+      <div class="about-card"><div class="card-label">Certified</div><div class="card-value">Google Sheets — 95th Percentile</div><div class="card-sub">TestGorilla Verified • May 2026</div></div>
+      <div class="about-card"><div class="card-label">Languages</div><div class="card-value">Arabic • French • English</div><div class="card-sub">Available for international clients</div></div>
     </div>
   </div>
 </section>
-
-<!-- CONTACT -->
 <section class="contact" id="contact">
   <div class="section-tag" style="justify-content:center">Let's Work Together</div>
-  <h2 class="contact-title">
-    Got a<br>
-    <span class="outline">project?</span>
-  </h2>
+  <h2 class="contact-title">Got a<br><span class="outline">project?</span></h2>
   <p class="contact-sub">Whether it's data, a dashboard, a website, or a presentation — send me the details and I'll get back to you fast.</p>
-
   <div class="contact-links">
-    <a href="mailto:borhen@buildtn.com" class="contact-link primary">✉ Send Email</a>
-    <a href="https://instagram.com/buildTN" class="contact-link" target="_blank">Instagram @buildTN</a>
-    <a href="https://linkedin.com/in/borhen-mejri" class="contact-link" target="_blank">LinkedIn</a>
+    <a href="mailto:borhenmejri5@gmail.com" class="contact-link primary">✉ Send Email</a>
+    <a href="https://www.instagram.com/borhen_mejri/" target="_blank" class="contact-link">Instagram</a>
+    <a href="https://www.linkedin.com/in/mejri-borheneddine-5846a62b3/" target="_blank" class="contact-link">LinkedIn</a>
   </div>
 </section>
-
-<!-- FOOTER -->
 <footer>
   <div class="footer-left">© 2026 <span>buildTN</span> — Borhen Mejri</div>
   <div class="footer-right">Tunisia 🇹🇳 — Available Worldwide</div>
 </footer>
-
 <script>
-  // Custom cursor
   const cursor = document.getElementById('cursor');
   const ring = document.getElementById('cursorRing');
   let mx = 0, my = 0, rx = 0, ry = 0;
-
   document.addEventListener('mousemove', e => {
     mx = e.clientX; my = e.clientY;
     cursor.style.left = mx - 5 + 'px';
     cursor.style.top = my - 5 + 'px';
   });
-
   function animRing() {
-    rx += (mx - rx) * 0.12;
-    ry += (my - ry) * 0.12;
-    ring.style.left = rx - 18 + 'px';
-    ring.style.top = ry - 18 + 'px';
+    rx += (mx - rx) * 0.12; ry += (my - ry) * 0.12;
+    ring.style.left = rx - 18 + 'px'; ring.style.top = ry - 18 + 'px';
     requestAnimationFrame(animRing);
   }
   animRing();
-
   document.querySelectorAll('a, button').forEach(el => {
-    el.addEventListener('mouseenter', () => {
-      ring.style.width = '56px';
-      ring.style.height = '56px';
-      ring.style.opacity = '0.8';
-    });
-    el.addEventListener('mouseleave', () => {
-      ring.style.width = '36px';
-      ring.style.height = '36px';
-      ring.style.opacity = '0.5';
-    });
+    el.addEventListener('mouseenter', () => { ring.style.width = '56px'; ring.style.height = '56px'; ring.style.opacity = '0.8'; });
+    el.addEventListener('mouseleave', () => { ring.style.width = '36px'; ring.style.height = '36px'; ring.style.opacity = '0.5'; });
   });
-
-  // Fade up on scroll
   const observer = new IntersectionObserver(entries => {
-    entries.forEach((entry, i) => {
-      if (entry.isIntersecting) {
-        setTimeout(() => entry.target.classList.add('visible'), i * 80);
-      }
-    });
+    entries.forEach((entry, i) => { if (entry.isIntersecting) setTimeout(() => entry.target.classList.add('visible'), i * 80); });
   }, { threshold: 0.1 });
-
   document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
 </script>
 </body>
