@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Industrial Analytics Platform — buildTN</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:ital,wght@0,300;0,400;1,300&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+:root{--bg:#0a0a0a;--surface:#111;--surface2:#1a1a1a;--border:#222;--text:#f0f0f0;--muted:#666;--accent:#00ff88;--dark:#0a1a0f;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--text);font-family:"DM Sans",sans-serif;cursor:none;}
+.cursor{position:fixed;width:10px;height:10px;background:var(--accent);border-radius:50%;pointer-events:none;z-index:9999;mix-blend-mode:difference;}
+.cursor-ring{position:fixed;width:36px;height:36px;border:1px solid var(--accent);border-radius:50%;pointer-events:none;z-index:9998;transition:width 0.2s,height 0.2s,opacity 0.2s;opacity:0.5;mix-blend-mode:difference;}
+nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;justify-content:space-between;align-items:center;padding:20px 48px;background:rgba(10,10,10,0.92);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);}
+.nav-logo{font-family:"Syne",sans-serif;font-weight:800;font-size:18px;color:var(--text);text-decoration:none;}
+.nav-logo span{color:var(--accent);}
+.back-btn{font-family:"DM Mono",monospace;font-size:11px;color:var(--muted);text-decoration:none;letter-spacing:0.08em;text-transform:uppercase;border:1px solid var(--border);padding:8px 18px;transition:all 0.2s;display:flex;align-items:center;gap:8px;}
+.back-btn:hover{color:var(--accent);border-color:var(--accent);}
+.hero{padding:110px 48px 60px;max-width:1280px;margin:0 auto;}
+.breadcrumb{font-family:"DM Mono",monospace;font-size:11px;color:var(--muted);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:24px;display:flex;align-items:center;gap:8px;}
+.breadcrumb a{color:var(--muted);text-decoration:none;transition:color 0.2s;}
+.breadcrumb a:hover{color:var(--accent);}
+.breadcrumb span{color:var(--accent);}
+.hero-top{display:grid;grid-template-columns:1fr auto;gap:40px;align-items:start;margin-bottom:64px;}
+.cat-badge{display:inline-flex;align-items:center;gap:8px;font-family:"DM Mono",monospace;font-size:11px;color:var(--accent);letter-spacing:0.15em;text-transform:uppercase;margin-bottom:16px;}
+.cat-badge::before{content:"";display:block;width:24px;height:1px;background:var(--accent);}
+h1{font-family:"Syne",sans-serif;font-weight:800;font-size:clamp(36px,5vw,64px);letter-spacing:-2.5px;line-height:1;color:var(--text);margin-bottom:20px;}
+.hero-desc{font-size:16px;color:var(--muted);line-height:1.8;max-width:580px;font-weight:300;margin-bottom:28px;}
+.stack{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:32px;}
+.stag{font-family:"DM Mono",monospace;font-size:10px;color:var(--muted);border:1px solid var(--border);padding:5px 12px;letter-spacing:0.05em;text-transform:uppercase;transition:all 0.2s;}
+.stag:hover{border-color:var(--accent);color:var(--accent);}
+.cta-row{display:flex;gap:12px;flex-wrap:wrap;}
+.btn-main{font-family:"DM Mono",monospace;font-size:12px;color:#0a0a0a;background:var(--accent);padding:12px 24px;text-decoration:none;letter-spacing:0.05em;text-transform:uppercase;transition:opacity 0.2s;display:inline-block;}
+.btn-main:hover{opacity:0.85;}
+.btn-outline{font-family:"DM Mono",monospace;font-size:12px;color:var(--text);border:1px solid var(--border);padding:12px 24px;text-decoration:none;letter-spacing:0.05em;text-transform:uppercase;transition:all 0.2s;display:inline-block;}
+.btn-outline:hover{border-color:var(--accent);color:var(--accent);}
+.stats-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--border);border:1px solid var(--border);min-width:280px;}
+.stat-box{background:var(--surface);padding:20px 24px;}
+.stat-val{font-family:"Syne",sans-serif;font-weight:800;font-size:24px;letter-spacing:-1px;color:var(--accent);}
+.stat-key{font-family:"DM Mono",monospace;font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:0.08em;margin-top:4px;}
+
+/* MOCKUP SECTION */
+.mockup-section{padding:0 48px 80px;max-width:1280px;margin:0 auto;}
+.gallery-label{font-family:"DM Mono",monospace;font-size:11px;color:var(--muted);letter-spacing:0.15em;text-transform:uppercase;margin-bottom:24px;display:flex;align-items:center;gap:10px;}
+.gallery-label::before{content:"";display:block;width:20px;height:1px;background:var(--accent);}
+
+/* Browser mockup */
+.browser-wrap{border:1px solid var(--border);background:var(--surface);margin-bottom:24px;overflow:hidden;}
+.browser-bar{background:#1a1a1a;padding:12px 16px;display:flex;align-items:center;gap:12px;border-bottom:1px solid var(--border);}
+.browser-dots{display:flex;gap:6px;}
+.dot{width:10px;height:10px;border-radius:50%;}
+.dot-r{background:#ef4444;}
+.dot-y{background:#f59e0b;}
+.dot-g{background:#10b981;}
+.browser-url{flex:1;background:#0a0a0a;border:1px solid var(--border);padding:5px 12px;font-family:"DM Mono",monospace;font-size:11px;color:var(--muted);border-radius:3px;}
+.browser-content{padding:0;}
+
+/* App UI Mockup */
+.app-shell{background:#0d1117;min-height:420px;display:grid;grid-template-columns:220px 1fr;}
+.sidebar{background:#161b22;border-right:1px solid #30363d;padding:20px 0;}
+.sidebar-logo{padding:0 20px 20px;border-bottom:1px solid #30363d;font-family:"Syne",sans-serif;font-weight:800;font-size:16px;color:#e6edf3;letter-spacing:-0.5px;}
+.sidebar-logo span{color:var(--accent);}
+.sidebar-nav{padding:16px 0;}
+.nav-item{padding:8px 20px;font-family:"DM Mono",monospace;font-size:11px;letter-spacing:0.05em;color:#8b949e;cursor:pointer;display:flex;align-items:center;gap:10px;transition:all 0.2s;}
+.nav-item.active{color:var(--accent);background:rgba(0,255,136,0.06);}
+.nav-item:hover:not(.active){color:#e6edf3;}
+.nav-dot{width:6px;height:6px;border-radius:50%;background:currentColor;opacity:0.5;}
+.nav-item.active .nav-dot{opacity:1;}
+.main-content{padding:24px;overflow:hidden;}
+.page-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;}
+.page-title{font-family:"Syne",sans-serif;font-weight:700;font-size:18px;color:#e6edf3;letter-spacing:-0.5px;}
+.header-badge{font-family:"DM Mono",monospace;font-size:10px;color:var(--accent);border:1px solid rgba(0,255,136,0.3);padding:4px 10px;letter-spacing:0.05em;text-transform:uppercase;}
+.kpi-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px;}
+.kpi-card{background:#161b22;border:1px solid #30363d;padding:14px 16px;border-radius:4px;}
+.kpi-val{font-family:"Syne",sans-serif;font-weight:800;font-size:20px;color:#e6edf3;letter-spacing:-0.5px;}
+.kpi-lbl{font-family:"DM Mono",monospace;font-size:9px;color:#8b949e;text-transform:uppercase;letter-spacing:0.08em;margin-top:2px;}
+.kpi-chg{font-size:11px;color:var(--accent);margin-top:4px;}
+.kpi-chg.red{color:#f85149;}
+.charts-row{display:grid;grid-template-columns:1.6fr 1fr;gap:12px;margin-bottom:20px;}
+.chart-box{background:#161b22;border:1px solid #30363d;border-radius:4px;padding:14px;}
+.chart-title{font-family:"DM Mono",monospace;font-size:10px;color:#8b949e;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:12px;}
+.chart-bars{display:flex;align-items:flex-end;gap:4px;height:80px;}
+.bar{background:var(--accent);border-radius:2px 2px 0 0;opacity:0.8;flex:1;transition:opacity 0.2s;}
+.bar:hover{opacity:1;}
+.chart-pie{display:flex;align-items:center;justify-content:center;height:80px;}
+.pie-visual{width:80px;height:80px;border-radius:50%;background:conic-gradient(var(--accent) 0% 38%, #4FC3F7 38% 62%, #1E2761 62% 80%, #F59E0B 80% 93%, #30363d 93% 100%);}
+.table-box{background:#161b22;border:1px solid #30363d;border-radius:4px;overflow:hidden;}
+.table-head{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;background:#0d1117;padding:8px 12px;border-bottom:1px solid #30363d;}
+.th{font-family:"DM Mono",monospace;font-size:9px;color:#8b949e;text-transform:uppercase;letter-spacing:0.08em;}
+.table-row{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;padding:8px 12px;border-bottom:1px solid #21262d;transition:background 0.15s;}
+.table-row:hover{background:rgba(255,255,255,0.02);}
+.td{font-family:"DM Mono",monospace;font-size:10px;color:#e6edf3;}
+.td.muted{color:#8b949e;}
+.td.green{color:var(--accent);}
+.td.red{color:#f85149;}
+.status-dot{display:inline-block;width:6px;height:6px;border-radius:50%;margin-right:5px;}
+
+/* SCREENS TABS */
+.screens-tabs{display:flex;gap:8px;margin-bottom:16px;}
+.tab-btn{font-family:"DM Mono",monospace;font-size:11px;color:var(--muted);border:1px solid var(--border);padding:6px 14px;cursor:pointer;transition:all 0.2s;background:transparent;}
+.tab-btn.active{color:var(--accent);border-color:var(--accent);}
+.tab-btn:hover:not(.active){color:var(--text);}
+
+/* DETAILS */
+.details-section{padding:0 48px 80px;max-width:1280px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:48px;}
+.detail-block{background:var(--surface);border:1px solid var(--border);padding:36px;position:relative;}
+.detail-block::before{content:"";position:absolute;left:0;top:0;width:3px;height:100%;background:var(--accent);}
+.detail-title{font-family:"Syne",sans-serif;font-weight:700;font-size:18px;letter-spacing:-0.5px;color:var(--text);margin-bottom:16px;}
+.detail-text{font-size:14px;color:var(--muted);line-height:1.8;font-weight:300;}
+.tools-grid{display:grid;grid-template-columns:1fr;gap:0;}
+.tool-item{display:flex;flex-direction:column;gap:4px;padding:14px 0;border-bottom:1px solid var(--border);}
+.tool-item:last-child{border-bottom:none;}
+.tool-name{font-family:"DM Mono",monospace;font-size:12px;color:var(--accent);letter-spacing:0.05em;}
+.tool-desc{font-size:13px;color:var(--muted);font-weight:300;}
+.features-list{display:flex;flex-direction:column;gap:12px;}
+.feature-item{display:flex;align-items:flex-start;gap:12px;font-size:14px;color:var(--muted);line-height:1.6;}
+.feature-item::before{content:"▸";color:var(--accent);font-size:12px;margin-top:2px;flex-shrink:0;}
+.cta-section{padding:80px 48px;background:var(--surface);border-top:1px solid var(--border);text-align:center;}
+.cta-title{font-family:"Syne",sans-serif;font-weight:800;font-size:clamp(28px,4vw,48px);letter-spacing:-2px;color:var(--text);margin-bottom:16px;}
+.cta-sub{font-size:15px;color:var(--muted);margin-bottom:32px;font-weight:300;}
+footer{padding:24px 48px;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;}
+.fl{font-family:"DM Mono",monospace;font-size:11px;color:var(--muted);}
+.fl span{color:var(--accent);}
+@media(max-width:768px){nav{padding:16px 24px;}.hero,.mockup-section,.details-section{padding-left:24px;padding-right:24px;}.hero-top{grid-template-columns:1fr;}.details-section{grid-template-columns:1fr;}.kpi-row{grid-template-columns:repeat(2,1fr);}.charts-row{grid-template-columns:1fr;}.app-shell{grid-template-columns:1fr;}.sidebar{display:none;}.cta-section{padding:60px 24px;}footer{flex-direction:column;gap:8px;text-align:center;}}
+</style>
+</head>
+<body>
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+<nav>
+  <a href="index.html" class="nav-logo">build<span>TN</span></a>
+  <a href="index.html" class="back-btn">← All Projects</a>
+</nav>
+
+<div class="hero">
+  <div class="breadcrumb"><a href="index.html">Portfolio</a> › <span>Industrial Analytics Platform</span></div>
+  <div class="hero-top">
+    <div>
+      <div class="cat-badge">Web Development</div>
+      <h1>Industrial Analytics<br>Web Platform</h1>
+      <p class="hero-desc">A full-stack Django web application for workplace accident analysis and industrial data management — featuring Power BI integration, multi-dataset CRUD, and ML-powered risk prediction.</p>
+      <div class="stack">
+        <span class="stag">Django</span><span class="stag">Python</span><span class="stag">SQL Server</span><span class="stag">Bootstrap 5</span><span class="stag">Power BI</span><span class="stag">mssql-django</span>
+      </div>
+      <div class="cta-row">
+        <a href="mailto:borhenmejri5@gmail.com" class="btn-main">Request a Demo</a>
+        <a href="index.html#portfolio" class="btn-outline">See All Projects</a>
+      </div>
+    </div>
+    <div class="stats-grid">
+      <div class="stat-box"><div class="stat-val">140K+</div><div class="stat-key">Records Managed</div></div>
+      <div class="stat-box"><div class="stat-val">5+</div><div class="stat-key">Data Modules</div></div>
+      <div class="stat-box"><div class="stat-val">3</div><div class="stat-key">ML Models</div></div>
+      <div class="stat-box"><div class="stat-val">4</div><div class="stat-key">Power BI Dashboards</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="mockup-section">
+  <div class="gallery-label">Live Application Preview</div>
+
+  <div class="screens-tabs">
+    <button class="tab-btn active" onclick="showScreen('dashboard')">Dashboard</button>
+    <button class="tab-btn" onclick="showScreen('table')">Data Table</button>
+    <button class="tab-btn" onclick="showScreen('analytics')">Analytics</button>
+  </div>
+
+  <!-- DASHBOARD SCREEN -->
+  <div id="screen-dashboard" class="browser-wrap">
+    <div class="browser-bar">
+      <div class="browser-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div>
+      <div class="browser-url">localhost:8000 / dashboard</div>
+    </div>
+    <div class="browser-content">
+      <div class="app-shell">
+        <div class="sidebar">
+          <div class="sidebar-logo">CASCO<span>Analytics</span></div>
+          <div class="sidebar-nav">
+            <div class="nav-item active"><div class="nav-dot"></div>Dashboard</div>
+            <div class="nav-item"><div class="nav-dot"></div>SCRAP Data</div>
+            <div class="nav-item"><div class="nav-dot"></div>Maintenance</div>
+            <div class="nav-item"><div class="nav-dot"></div>Accidents</div>
+            <div class="nav-item"><div class="nav-dot"></div>Forecasting</div>
+            <div class="nav-item"><div class="nav-dot"></div>Power BI</div>
+            <div class="nav-item"><div class="nav-dot"></div>Settings</div>
+          </div>
+        </div>
+        <div class="main-content">
+          <div class="page-header">
+            <div class="page-title">Overview Dashboard</div>
+            <div class="header-badge">Live Data</div>
+          </div>
+          <div class="kpi-row">
+            <div class="kpi-card"><div class="kpi-val">7,223</div><div class="kpi-lbl">Scrap Records</div><div class="kpi-chg">↑ +342 this month</div></div>
+            <div class="kpi-card"><div class="kpi-val">141K</div><div class="kpi-lbl">Quality Checks</div><div class="kpi-chg">↑ Active</div></div>
+            <div class="kpi-card"><div class="kpi-val">9,104</div><div class="kpi-lbl">Maintenance Logs</div><div class="kpi-chg">↑ Updated</div></div>
+            <div class="kpi-card"><div class="kpi-val">7</div><div class="kpi-lbl">Accidents Logged</div><div class="kpi-chg red">↓ Review needed</div></div>
+          </div>
+          <div class="charts-row">
+            <div class="chart-box">
+              <div class="chart-title">Monthly Scrap Cost (DH)</div>
+              <div class="chart-bars">
+                <div class="bar" style="height:45%"></div><div class="bar" style="height:60%"></div><div class="bar" style="height:38%"></div><div class="bar" style="height:72%"></div><div class="bar" style="height:55%"></div><div class="bar" style="height:88%"></div><div class="bar" style="height:65%"></div><div class="bar" style="height:70%"></div><div class="bar" style="height:50%"></div><div class="bar" style="height:95%"></div><div class="bar" style="height:80%"></div><div class="bar" style="height:62%"></div>
+              </div>
+            </div>
+            <div class="chart-box">
+              <div class="chart-title">By Category</div>
+              <div class="chart-pie"><div class="pie-visual"></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TABLE SCREEN -->
+  <div id="screen-table" class="browser-wrap" style="display:none;">
+    <div class="browser-bar">
+      <div class="browser-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div>
+      <div class="browser-url">localhost:8000 / scrap / list</div>
+    </div>
+    <div class="browser-content">
+      <div class="app-shell">
+        <div class="sidebar">
+          <div class="sidebar-logo">CASCO<span>Analytics</span></div>
+          <div class="sidebar-nav">
+            <div class="nav-item"><div class="nav-dot"></div>Dashboard</div>
+            <div class="nav-item active"><div class="nav-dot"></div>SCRAP Data</div>
+            <div class="nav-item"><div class="nav-dot"></div>Maintenance</div>
+            <div class="nav-item"><div class="nav-dot"></div>Accidents</div>
+            <div class="nav-item"><div class="nav-dot"></div>Forecasting</div>
+            <div class="nav-item"><div class="nav-dot"></div>Power BI</div>
+            <div class="nav-item"><div class="nav-dot"></div>Settings</div>
+          </div>
+        </div>
+        <div class="main-content">
+          <div class="page-header">
+            <div class="page-title">SCRAP Records</div>
+            <div class="header-badge">7,223 rows</div>
+          </div>
+          <div class="table-box">
+            <div class="table-head">
+              <div class="th">Machine</div><div class="th">Date</div><div class="th">Cost (DH)</div><div class="th">Status</div>
+            </div>
+            <div class="table-row"><div class="td">M-012</div><div class="td muted">2024-11-14</div><div class="td">1,240</div><div class="td red">Critical</div></div>
+            <div class="table-row"><div class="td">M-007</div><div class="td muted">2024-11-13</div><div class="td">890</div><div class="td green">Normal</div></div>
+            <div class="table-row"><div class="td">M-024</div><div class="td muted">2024-11-12</div><div class="td">2,100</div><div class="td red">High Risk</div></div>
+            <div class="table-row"><div class="td">M-003</div><div class="td muted">2024-11-11</div><div class="td">450</div><div class="td green">Normal</div></div>
+            <div class="table-row"><div class="td">M-018</div><div class="td muted">2024-11-10</div><div class="td">1,780</div><div class="td">Medium</div></div>
+            <div class="table-row"><div class="td">M-031</div><div class="td muted">2024-11-09</div><div class="td">620</div><div class="td green">Normal</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ANALYTICS SCREEN -->
+  <div id="screen-analytics" class="browser-wrap" style="display:none;">
+    <div class="browser-bar">
+      <div class="browser-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div>
+      <div class="browser-url">localhost:8000 / analytics / forecast</div>
+    </div>
+    <div class="browser-content">
+      <div class="app-shell">
+        <div class="sidebar">
+          <div class="sidebar-logo">CASCO<span>Analytics</span></div>
+          <div class="sidebar-nav">
+            <div class="nav-item"><div class="nav-dot"></div>Dashboard</div>
+            <div class="nav-item"><div class="nav-dot"></div>SCRAP Data</div>
+            <div class="nav-item"><div class="nav-dot"></div>Maintenance</div>
+            <div class="nav-item"><div class="nav-dot"></div>Accidents</div>
+            <div class="nav-item active"><div class="nav-dot"></div>Forecasting</div>
+            <div class="nav-item"><div class="nav-dot"></div>Power BI</div>
+            <div class="nav-item"><div class="nav-dot"></div>Settings</div>
+          </div>
+        </div>
+        <div class="main-content">
+          <div class="page-header">
+            <div class="page-title">5-Year Forecast</div>
+            <div class="header-badge">Prophet ML</div>
+          </div>
+          <div class="kpi-row">
+            <div class="kpi-card"><div class="kpi-val">587K</div><div class="kpi-lbl">Projected Cost DH</div><div class="kpi-chg">↑ 2025 forecast</div></div>
+            <div class="kpi-card"><div class="kpi-val">94.2%</div><div class="kpi-lbl">Model Accuracy</div><div class="kpi-chg">↑ R² score</div></div>
+            <div class="kpi-card"><div class="kpi-val">High</div><div class="kpi-lbl">Risk: M-012</div><div class="kpi-chg red">↑ Random Forest</div></div>
+            <div class="kpi-card"><div class="kpi-val">2.1%</div><div class="kpi-lbl">Anomaly Rate</div><div class="kpi-chg">Isolation Forest</div></div>
+          </div>
+          <div class="charts-row">
+            <div class="chart-box">
+              <div class="chart-title">Scrap Cost Forecast 2025–2030</div>
+              <div class="chart-bars" style="height:100px;">
+                <div class="bar" style="height:50%;opacity:1"></div><div class="bar" style="height:55%;opacity:1"></div><div class="bar" style="height:48%;opacity:1"></div><div class="bar" style="height:62%;opacity:1"></div><div class="bar" style="height:58%;opacity:0.6;border:1px dashed rgba(0,255,136,0.5);background:transparent;"></div><div class="bar" style="height:65%;opacity:0.6;border:1px dashed rgba(0,255,136,0.5);background:transparent;"></div><div class="bar" style="height:70%;opacity:0.6;border:1px dashed rgba(0,255,136,0.5);background:transparent;"></div><div class="bar" style="height:68%;opacity:0.6;border:1px dashed rgba(0,255,136,0.5);background:transparent;"></div><div class="bar" style="height:75%;opacity:0.6;border:1px dashed rgba(0,255,136,0.5);background:transparent;"></div>
+              </div>
+            </div>
+            <div class="chart-box">
+              <div class="chart-title">Risk Classification</div>
+              <div style="display:flex;flex-direction:column;gap:8px;padding-top:8px;">
+                <div style="display:flex;justify-content:space-between;align-items:center;"><span style="font-family:'DM Mono',monospace;font-size:10px;color:#8b949e;">High Risk</span><div style="width:60%;background:#f85149;height:12px;border-radius:2px;opacity:0.8;"></div><span style="font-family:'DM Mono',monospace;font-size:10px;color:#f85149;">23%</span></div>
+                <div style="display:flex;justify-content:space-between;align-items:center;"><span style="font-family:'DM Mono',monospace;font-size:10px;color:#8b949e;">Medium</span><div style="width:40%;background:#f59e0b;height:12px;border-radius:2px;opacity:0.8;"></div><span style="font-family:'DM Mono',monospace;font-size:10px;color:#f59e0b;">35%</span></div>
+                <div style="display:flex;justify-content:space-between;align-items:center;"><span style="font-family:'DM Mono',monospace;font-size:10px;color:#8b949e;">Low Risk</span><div style="width:80%;background:var(--accent);height:12px;border-radius:2px;opacity:0.8;"></div><span style="font-family:'DM Mono',monospace;font-size:10px;color:var(--accent);">42%</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="details-section">
+  <div class="detail-block">
+    <div class="detail-title">About This Project</div>
+    <div class="detail-text" style="margin-bottom:20px;">Built as a Final Year Project for Esprit School of Business, this Django web application serves as the interface layer for a complete industrial data analytics system at CASCO Automotive Tunisia (Amphenol Group).</div>
+    <div class="features-list">
+      <div class="feature-item">Multi-dataset CRUD with pagination for 140,000+ records across SCRAP, maintenance, and HSE modules</div>
+      <div class="feature-item">Embedded Power BI dashboards with iframe integration for live reporting</div>
+      <div class="feature-item">Prophet 5-year forecasting, Random Forest risk classification, and Isolation Forest anomaly detection</div>
+      <div class="feature-item">SQL Server backend via mssql-django with optimized queries for large datasets</div>
+      <div class="feature-item">Bootstrap 5 responsive UI with Font Awesome icons and custom dark theme</div>
+      <div class="feature-item">Full Scrum methodology with 4 sprints — ETL, EDA, ML, and final deployment</div>
+    </div>
+  </div>
+  <div class="detail-block">
+    <div class="detail-title">Tech Stack</div>
+    <div class="tools-grid">
+      <div class="tool-item"><div class="tool-name">Django + Python</div><div class="tool-desc">Backend framework — views, models, URL routing, template engine</div></div>
+      <div class="tool-item"><div class="tool-name">SQL Server + mssql-django</div><div class="tool-desc">Database — casco_db on DESKTOP-ART0JK0, optimized for large tables</div></div>
+      <div class="tool-item"><div class="tool-name">Bootstrap 5 + Font Awesome</div><div class="tool-desc">Responsive UI components, icons, and custom dark theme styling</div></div>
+      <div class="tool-item"><div class="tool-name">Power BI (iframe embed)</div><div class="tool-desc">4 dashboards embedded — SCRAP KPIs, maintenance, predictive analytics</div></div>
+      <div class="tool-item"><div class="tool-name">Scikit-learn + Prophet</div><div class="tool-desc">ML pipeline — forecasting, risk classification, anomaly detection</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="cta-section">
+  <div class="cta-title">Need a web app built?</div>
+  <div class="cta-sub">I build Django applications from scratch — database, backend, frontend, and deployment.</div>
+  <a href="mailto:borhenmejri5@gmail.com" class="btn-main">borhenmejri5@gmail.com</a>
+</div>
+
+<footer>
+  <div class="fl">© 2026 <span>buildTN</span> — Borhen Mejri</div>
+  <div class="fl">Tunisia 🇹🇳 — Available Worldwide</div>
+</footer>
+
+<script>
+function showScreen(name) {
+  ['dashboard','table','analytics'].forEach(s => {
+    document.getElementById('screen-'+s).style.display = s===name?'block':'none';
+  });
+  document.querySelectorAll('.tab-btn').forEach((btn,i) => {
+    btn.classList.toggle('active', ['dashboard','table','analytics'][i]===name);
+  });
+}
+const cursor = document.getElementById('cursor');
+const ring = document.getElementById('cursorRing');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove', e => { mx=e.clientX;my=e.clientY;cursor.style.left=mx-5+'px';cursor.style.top=my-5+'px'; });
+function animRing(){rx+=(mx-rx)*0.12;ry+=(my-ry)*0.12;ring.style.left=rx-18+'px';ring.style.top=ry-18+'px';requestAnimationFrame(animRing);}
+animRing();
+document.querySelectorAll('a,button').forEach(el=>{el.addEventListener('mouseenter',()=>{ring.style.width='56px';ring.style.height='56px';ring.style.opacity='0.8';});el.addEventListener('mouseleave',()=>{ring.style.width='36px';ring.style.height='36px';ring.style.opacity='0.5';});});
+</script>
+</body>
+</html>
